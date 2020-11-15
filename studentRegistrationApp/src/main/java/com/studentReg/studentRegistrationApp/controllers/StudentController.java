@@ -16,21 +16,26 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
+//    @PostMapping(path="/addStudentTest") // Map ONLY POST Requests
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    public @ResponseBody
+//    String addNewStudentTest (@RequestBody StudentRequest newStudent) {
+//        // @ResponseBody means the returned String is the response, not a view name
+//        // @RequestParam means it is a parameter from the GET or POST request
+//
+//        studentService.saveTest(newStudent);
+//        return "Student added!";
+//    }
+
     @PostMapping(path="/addStudent") // Map ONLY POST Requests
     @CrossOrigin(origins = "http://localhost:3000")
     public @ResponseBody
-    String addNewStudent (@RequestBody StudentRequest newStudent) {
+    Student addNewStudent (@RequestBody StudentRequest newStudent) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
-        Student student = new Student();
-        student.setName(newStudent.getName());
-        student.setSurName(newStudent.getSurName());
-        student.setEmail(newStudent.getEmail());
-        student.setStudentNumber(newStudent.getStudentNumber());
-        student.setStudent_id(newStudent.getStudent_id());
 
-        studentService.save(student);
-        return "Student added!";
+        Student student = studentService.save(newStudent);
+        return student;
     }
 
     @PutMapping(path="/registerStudent/{studentNumber}/{qualificationCode}") // Map ONLY POST Requests

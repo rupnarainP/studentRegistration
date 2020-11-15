@@ -1,6 +1,7 @@
 package com.studentReg.studentRegistrationApp.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.studentReg.studentRegistrationApp.types.student.StudentRequest;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
@@ -30,6 +31,19 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "qualification_id"))
     @JsonManagedReference
     private Set<Qualification> qualifications;
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
+
+    public Student(){}
+
+    public Student(StudentRequest studentRequest){
+        this.name = studentRequest.getName().trim();
+        this.surName = studentRequest.getSurName().trim();
+        this.email = studentRequest.getEmail().trim();
+        this.student_id = studentRequest.getStudent_id().trim();
+    }
 
     public Integer getId() {
         return id;
@@ -85,5 +99,13 @@ public class Student {
 
     public void setQualifications(Set<Qualification> qualifications) {
         this.qualifications = qualifications;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

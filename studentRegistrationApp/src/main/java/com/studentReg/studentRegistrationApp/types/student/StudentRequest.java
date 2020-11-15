@@ -1,5 +1,7 @@
 package com.studentReg.studentRegistrationApp.types.student;
 
+import com.studentReg.studentRegistrationApp.entities.Address;
+import com.studentReg.studentRegistrationApp.types.address.AddressRequest;
 import org.springframework.lang.NonNull;
 
 public class StudentRequest {
@@ -13,6 +15,9 @@ public class StudentRequest {
     private String studentNumber;
     @NonNull
     private String student_id;
+
+    @NonNull
+    private AddressRequest address;
 
     @NonNull
     public String getName() {
@@ -57,5 +62,14 @@ public class StudentRequest {
 
     public void setStudent_id(@NonNull String student_id) {
         this.student_id = student_id;
+    }
+
+    @NonNull
+    public AddressRequest getAddress() {
+        return address;
+    }
+
+    public void setAddress(@NonNull AddressRequest address) {
+        this.address = address;
     }
 }

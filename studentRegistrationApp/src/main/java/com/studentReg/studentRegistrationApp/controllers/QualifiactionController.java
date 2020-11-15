@@ -22,7 +22,7 @@ public class QualifiactionController {
     @PostMapping(path="/addQualification") // Map ONLY POST Requests
     @CrossOrigin(origins = "http://localhost:3000")
     public @ResponseBody
-    String addNewStudent (@RequestBody QualificationRequest newQualification) {
+    String addNewQualification (@RequestBody QualificationRequest newQualification) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
     Qualification qualification = new Qualification(newQualification);

@@ -2,12 +2,12 @@ package com.studentReg.studentRegistrationApp.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.studentReg.studentRegistrationApp.entities.AcademicRecord;
+import com.studentReg.studentRegistrationApp.entities.*;
 import com.studentReg.studentRegistrationApp.entities.Module;
-import com.studentReg.studentRegistrationApp.entities.Qualification;
-import com.studentReg.studentRegistrationApp.entities.Student;
+import com.studentReg.studentRegistrationApp.repositories.AddressRepository;
 import com.studentReg.studentRegistrationApp.repositories.QualificationRespository;
 import com.studentReg.studentRegistrationApp.repositories.StudentRepository;
+import com.studentReg.studentRegistrationApp.types.student.StudentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +28,9 @@ public class StudentService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
     public Student findByStudentNumber(String studentNumber){
         Student student = studentRepository.findByStudentNumber(studentNumber);
         return student;
@@ -42,8 +45,24 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public void save(Student student){
-        studentRepository.save(student);
+//    public void save(Student student){
+//        Integer id = studentRepository.findTopByOrderByIdDesc();
+//        student.setStudentNumber((id + 1) + "");
+//        studentRepository.save(student);
+//    }
+
+    public Student save(StudentRequest newStudent){
+        Integer id = studentRepository.findTopByOrderByIdDesc().getId();
+        Student student = new Student(newStudent);
+        Address address = new Address(newStudent.getAddress());
+        Address savedAddress = addressRepository.save(address);
+        student.setStudentNumber((id + 1) + "");
+        student.setAddress(savedAddress);
+        Student addedStudent = studentRepository.save(student);
+        address.setStudent(addedStudent);
+        addressRepository.save(address);
+
+        return addedStudent;
     }
 
     public void update(String studentNumber, String qualificationCode){
